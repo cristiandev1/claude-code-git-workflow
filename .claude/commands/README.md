@@ -63,16 +63,41 @@ Inicia o processo de análise técnica profunda do codebase.
 
 ---
 
+### `/pattern` - Detectar Padrões do Projeto (NOVO!)
+Analisa e documenta automaticamente os padrões arquiteturais e convenções do projeto.
+
+**Workflow:**
+1. Não cria branch (pode executar em qualquer branch)
+2. Detecta automaticamente:
+   - Arquitetura (MVC, Clean Architecture, etc.)
+   - Design Patterns (Repository, Factory, etc.)
+   - Convenções de código (naming, estrutura)
+   - Stack tecnológica
+   - Padrões de teste
+3. Cria `.claude/context/project-patterns.md`
+4. Usado automaticamente pelo `/execute`
+
+**Quando usar:**
+- Primeira vez configurando o projeto
+- Após mudanças arquiteturais significativas
+- Para atualizar análise de padrões
+- Onboarding de novos membros
+
+**Nota:** O `/execute` faz isso automaticamente se o arquivo não existir.
+
+---
+
 ### `/execute` - Plano Técnico e Implementação
 Analisa o contexto documentado e cria um plano técnico detalhado para implementação.
 
 **Workflow:**
 1. Verifica se está em branch correta
 2. Lê `.claude/context/current-task.md`
-3. Explora o codebase
-4. Cria plano técnico detalhado
-5. Aguarda aprovação do usuário
-6. Implementa após confirmação
+3. **Detecta padrões do projeto** (automático se não existir `project-patterns.md`)
+4. Explora o codebase
+5. Cria plano técnico **seguindo os padrões detectados**
+6. Aguarda aprovação do usuário
+7. Implementa após confirmação **mantendo consistência**
 
 ---
 
@@ -89,6 +114,7 @@ Todos os comandos seguem a convenção:
 - `fix/` - Correções de bugs
 - `remove/` - Remoção de código/features
 - `analyze/` - Análises técnicas
+- *(sem branch)* - `/pattern` não cria branch
 
 **Exemplos:**
 - `feature/responsive-mobile`
@@ -107,6 +133,7 @@ Todos os comandos seguem a convenção:
 /fix        # para corrigir bug
 /remove     # para remover código
 /analyze    # para análise técnica
+/pattern    # para detectar padrões (opcional, /execute faz automaticamente)
 ```
 
 ### 2. Documentar Contexto

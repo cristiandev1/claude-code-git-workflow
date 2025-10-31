@@ -1,4 +1,4 @@
-# Context files are temporary and session-specific
-# Only the .gitkeep should be tracked
-*.md
-!.gitkeep
+# Temporary task context (session-specific, should not be committed)
+current-task.md
+
+# Note: project-patterns.md should be committed as it's part of project configuration

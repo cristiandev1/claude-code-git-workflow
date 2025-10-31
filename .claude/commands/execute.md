@@ -19,18 +19,41 @@ Antes de começar:
    - Leia o arquivo `.claude/context/current-task.md`
    - Se não existir, informe o usuário para rodar `/feature`, `/fix`, ou `/remove` primeiro
 
-2. **Explore o codebase**:
+2. **Detecte padrões do projeto (AUTOMÁTICO)**:
+   - Verifique se existe `.claude/context/project-patterns.md`
+   - Se NÃO existir:
+     - Execute análise automática de padrões (similar ao `/pattern`)
+     - Detecte: arquitetura, design patterns, convenções, stack, testes
+     - Crie o arquivo `project-patterns.md` com os padrões encontrados
+     - Se não conseguir detectar padrões claros, use AskUserQuestion para perguntar preferências
+   - Se EXISTIR:
+     - Leia e use como referência para o plano técnico
+     - Se o arquivo estiver desatualizado (>30 dias), sugira re-executar `/pattern`
+
+3. **Explore o codebase**:
    - Use o Task tool com subagent_type=Explore para entender a arquitetura
    - Identifique arquivos, componentes e padrões relevantes
    - Entenda como o código atual funciona
+   - **IMPORTANTE:** Compare com os padrões documentados em `project-patterns.md`
 
-3. **Crie o plano técnico**:
+4. **Crie o plano técnico SEGUINDO os padrões**:
    - Arquivos que serão criados/modificados/removidos
+     - **IMPORTANTE:** Siga a estrutura de pastas detectada em `project-patterns.md`
+     - Use as naming conventions documentadas
    - Componentes, funções e hooks envolvidos
+     - Utilize os design patterns identificados no projeto
+     - Mantenha consistência com código existente
    - Fluxo de dados e integrações
+     - Use as bibliotecas de state/data fetching já configuradas
    - Estrutura de testes necessários
+     - **IMPORTANTE:** Siga os padrões de teste detectados (framework, estrutura, estilo)
+     - Mantenha mesmo nível de coverage do projeto
    - Considerações de performance, segurança, acessibilidade
    - Migrações ou mudanças de dados (se aplicável)
+   - **Verificação de consistência:**
+     - Confirme que o plano segue a arquitetura documentada
+     - Verifique se está usando os patterns corretos
+     - Valide naming conventions
 
 4. **Use TodoWrite**:
    - Crie uma lista de tarefas clara e detalhada
@@ -52,9 +75,18 @@ Antes de começar:
 ## Formato da apresentação:
 
 ```
+## Padrões do Projeto
+
+[Resumo dos padrões detectados/documentados que serão seguidos]
+- Arquitetura: [arquitetura detectada]
+- Patterns: [patterns relevantes para esta task]
+- Convenções: [convenções que serão mantidas]
+- Testes: [padrão de teste a seguir]
+
 ## Análise Técnica
 
 [Resumo da análise do codebase e decisões arquiteturais]
+[Explicar COMO o plano segue os padrões do projeto]
 
 ## Arquivos Envolvidos
 

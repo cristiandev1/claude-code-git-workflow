@@ -85,6 +85,8 @@ Após entender completamente, crie o arquivo `.claude/context/current-task.md` c
 
 Ao finalizar, informe: "✓ Contexto documentado em .claude/context/current-task.md. Execute `/execute` quando estiver pronto para ver o plano técnico."
 
+**Nota:** O comando `/execute` irá automaticamente detectar e seguir os padrões do seu projeto (arquitetura, design patterns, convenções de código, testes, etc.). Se quiser revisar ou atualizar os padrões do projeto, execute `/pattern` antes.
+
 ## Após implementação e commit:
 
 Quando estiver pronto para fazer push e finalizar:

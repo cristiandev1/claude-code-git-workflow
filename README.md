@@ -24,6 +24,7 @@ Um conjunto completo de comandos slash para Claude Code que:
 - ✅ **Branching Git automático** - Padrões consistentes `feature/`, `fix/`, `remove/`, `analyze/`
 - ✅ **Documentação viva** - Contexto preservado em `current-task.md`
 - ✅ **Planejamento técnico** - Crie planos detalhados de implementação antes de codificar
+- ✅ **Detecção automática de padrões** - Analisa e mantém consistência arquitetural e de código
 - ✅ **Workflow limpo** - Limpeza automática após conclusão da tarefa
 
 ## 📦 Instalação
@@ -54,11 +55,14 @@ seu-projeto/
     │   ├── fix.md          # Corrigir bugs
     │   ├── remove.md       # Remover código/features
     │   ├── analyze.md      # Análise técnica
+    │   ├── pattern.md      # Detectar padrões do projeto (NOVO!)
     │   ├── execute.md      # Criar & executar plano técnico
     │   └── README.md       # Documentação dos comandos
     └── context/
-        ├── .gitignore      # Ignorar arquivos temporários
-        └── .gitkeep        # Rastrear estrutura de diretório
+        ├── .gitignore           # Ignorar current-task.md
+        ├── .gitkeep             # Rastrear estrutura de diretório
+        ├── current-task.md      # Contexto da tarefa atual (temporário)
+        └── project-patterns.md  # Padrões do projeto (deve ser commitado)
 ```
 
 ## 🚀 Uso
@@ -71,7 +75,38 @@ seu-projeto/
 | `/fix` | Corrigir bugs ou problemas | `fix/[nome]` | Corrigir comportamento quebrado |
 | `/remove` | Remover código/features | `remove/[nome]` | Deletar código obsoleto |
 | `/analyze` | Análise técnica | `analyze/[nome]` | Auditorias de código, planos de refatoração |
+| `/pattern` | Detectar padrões do projeto | *(qualquer branch)* | Documentar arquitetura e convenções |
 | `/execute` | Executar plano técnico | *(branch atual)* | Após descoberta estar completa |
+
+### Detecção Automática de Padrões
+
+O sistema agora **detecta automaticamente** os padrões do seu projeto e garante consistência em todas as implementações.
+
+#### Como Funciona
+
+1. **Primeira vez usando `/execute`**:
+   - Detecta automaticamente arquitetura, design patterns, convenções de código, e padrões de teste
+   - Cria `.claude/context/project-patterns.md` com a análise completa
+   - Usa esses padrões no plano técnico
+
+2. **Usos subsequentes**:
+   - Consulta `project-patterns.md` automaticamente
+   - Garante que todo código novo segue os mesmos padrões
+
+3. **Comando `/pattern` (opcional)**:
+   - Execute quando quiser atualizar ou revisar a análise de padrões
+   - Útil após mudanças significativas no projeto
+
+#### O Que é Detectado Automaticamente
+
+- **Arquitetura**: MVC, Clean Architecture, Hexagonal, DDD, etc.
+- **Design Patterns**: Repository, Factory, Singleton, DI, etc.
+- **Naming Conventions**: camelCase, PascalCase, kebab-case, etc.
+- **Estrutura de Pastas**: Por feature, por tipo, co-location, etc.
+- **Stack Tecnológica**: Frameworks, bibliotecas, versões
+- **Padrões de Teste**: Framework, estrutura, estilo (AAA, Given-When-Then)
+- **Code Quality**: Linters, formatters, métricas
+- **State Management**: Redux, Zustand, Context API, etc.
 
 ### Exemplo de Workflow Completo
 
@@ -158,6 +193,46 @@ Usuário: sim
 3. **Histórico Git Mais Limpo** - Uma feature = Uma branch bem nomeada
 4. **Alinhamento do Time** - Todos seguem o mesmo processo
 5. **Transferência de Conhecimento** - `current-task.md` preserva contexto
+6. **Consistência Arquitetural** - Padrões detectados automaticamente e mantidos em todo código novo
+
+## 🎯 Filosofia de Consistência
+
+### Detecção e Manutenção de Padrões
+
+Este workflow vai além de apenas estruturar tarefas - ele **garante consistência arquitetural** em todo o projeto:
+
+**Antes (problema comum):**
+```
+Projeto usa Clean Architecture...
+Dev 1 adiciona feature seguindo MVC
+Dev 2 adiciona outra feature com estrutura diferente
+→ Código inconsistente, difícil manutenção
+```
+
+**Agora (com detecção de padrões):**
+```
+Sistema detecta: "Este projeto usa Clean Architecture"
+Todas as features seguem automaticamente:
+- Mesma estrutura de pastas (domain/, application/, infrastructure/)
+- Mesmos design patterns (Repository, Use Cases)
+- Mesmas naming conventions
+- Mesmos padrões de teste
+→ Código consistente, fácil manutenção
+```
+
+### Quando os Padrões São Aplicados
+
+1. **`/pattern`**: Analisa e documenta padrões do projeto
+2. **`/execute`**: Detecta padrões automaticamente (se não existir `project-patterns.md`)
+3. **Implementação**: Todo código segue os padrões documentados
+4. **Code Review**: Revisores podem verificar conformidade com padrões
+
+### Benefícios da Consistência
+
+- **Onboarding mais rápido**: Novos devs entendem os padrões rapidamente
+- **Código previsível**: Estrutura familiar em todo o projeto
+- **Manutenção facilitada**: Padrões claros = menos decisões ad-hoc
+- **Escalabilidade**: Fácil adicionar features mantendo qualidade
 
 ## 📚 Referência de Comandos
 
@@ -235,6 +310,31 @@ Usuário: sim
 - `analyze/performance`
 - `analyze/auditoria-seguranca`
 - `analyze/tamanho-bundle`
+
+---
+
+### `/pattern` - Detectar Padrões do Projeto
+
+**Executa em:** Qualquer branch (não cria branch nova)
+
+**O Que Faz:**
+- Analisa automaticamente toda a estrutura do projeto
+- Detecta arquitetura, design patterns e convenções
+- Identifica stack tecnológica e frameworks
+- Mapeia padrões de teste e code quality
+- Documenta tudo em `.claude/context/project-patterns.md`
+
+**Quando Usar:**
+- Primeira vez configurando o projeto
+- Após mudanças significativas na arquitetura
+- Para revisar e atualizar padrões documentados
+- Quando novos membros entram no time
+
+**Saída:**
+- Arquivo `.claude/context/project-patterns.md` com análise completa
+- Usado automaticamente por `/execute` para manter consistência
+
+**Nota:** O `/execute` já faz isso automaticamente se o arquivo não existir. Use `/pattern` quando quiser forçar uma re-análise.
 
 ---
 
@@ -363,6 +463,24 @@ Siga [Conventional Commits](https://www.conventionalcommits.org/):
 - `docs:` - Documentação
 - `test:` - Testes
 
+### 5. Mantenha project-patterns.md Atualizado
+O arquivo `.claude/context/project-patterns.md` deve ser commitado e versionado:
+```bash
+# Após mudanças arquiteturais significativas, re-execute
+/pattern
+
+# Commite as atualizações
+git add .claude/context/project-patterns.md
+git commit -m "docs: atualizar análise de padrões do projeto"
+```
+
+**Quando re-executar `/pattern`:**
+- Adoção de nova arquitetura ou patterns
+- Mudança de framework principal
+- Novos padrões de teste
+- Onboarding de novos membros do time
+- A cada 3-6 meses (manutenção)
+
 ## 🔍 Solução de Problemas
 
 ### Comandos Não Aparecem
@@ -448,6 +566,33 @@ Usuário: /execute
 Usuário: "prosseguir"
 > Remove código antigo, atualiza configs, limpa dependências
 > Branch: remove/analytics-legado
+```
+
+### Exemplo 4: Detecção de Padrões (Novo!)
+```
+Usuário: /pattern
+> Claude detecta automaticamente:
+  - Arquitetura: Clean Architecture
+  - Patterns: Repository, UseCase, DI
+  - Testes: Jest com AAA pattern
+  - Naming: PascalCase para classes, camelCase para funções
+
+> Cria .claude/context/project-patterns.md
+> "✓ Padrões documentados. Use /execute - ele seguirá automaticamente esses padrões."
+
+Usuário: /feature
+> "Adicionar sistema de notificações"
+
+Usuário: /execute
+> Claude: "Detectei que o projeto usa Clean Architecture com Repository pattern..."
+> Cria plano seguindo EXATAMENTE a mesma estrutura:
+  - domain/entities/Notification.ts
+  - domain/repositories/INotificationRepository.ts
+  - application/usecases/SendNotificationUseCase.ts
+  - infrastructure/repositories/NotificationRepository.ts
+  - __tests__/usecases/SendNotificationUseCase.test.ts (Jest com AAA)
+
+> Todo código mantém consistência com o resto do projeto!
 ```
 
 ## 🌟 Por Que Isso Importa
