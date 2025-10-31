@@ -1,0 +1,4 @@
+# Context files are temporary and session-specific
+# Only the .gitkeep should be tracked
+*.md
+!.gitkeep
